@@ -283,6 +283,7 @@ TELAS['kit'] = () => `
   <h1>Kit completo do Lucrécio — grátis</h1>
   <p>Receba as planilhas completas de cada episódio, o passo a passo para usar e o aviso quando sair a próxima ferramenta.</p>
   <form class="cartao" id="form-kit" novalidate>
+    <input type="text" id="site" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
     <label for="nome">Seu nome</label><input type="text" id="nome" autocomplete="given-name" required>
     <label for="contato">WhatsApp ou e-mail</label><input type="text" id="contato" autocomplete="email" required>
     <label for="segmento">Qual é o seu negócio?</label>
@@ -297,7 +298,7 @@ TELAS['kit'] = () => `
   </form>`;
 async function enviarKit(ev) {
   ev.preventDefault();
-  const dados = { nome: $('#nome').value.trim(), contato: $('#contato').value.trim(), segmento: $('#segmento').value, porte: $('#porte').value, origem: location.hash, quando: new Date().toISOString() };
+  const dados = { nome: $('#nome').value.trim(), contato: $('#contato').value.trim(), segmento: $('#segmento').value, porte: $('#porte').value, origem: (() => { try { return sessionStorage.getItem('kit_origem') || 'direto'; } catch (e) { return 'direto'; } })(), aceite: $('#aceite').checked, site: $('#site').value };
   const msg = $('#msg-kit');
   if (!dados.nome || !dados.contato) { msg.innerHTML = `<div class="destaque meio">Preencha o nome e o contato.</div>`; return; }
   if (!$('#aceite').checked) { msg.innerHTML = `<div class="destaque meio">Para enviar, marque que aceita receber os materiais.</div>`; return; }
@@ -328,6 +329,7 @@ function abrir() {
   $('#voltar').classList.toggle('oculto', !rota);
   window.scrollTo(0, 0);
   rotaAtual = rota;
+  if (['preco', 'caixa', 'raio-x'].includes(rota)) { try { sessionStorage.setItem('kit_origem', rota); } catch (e) {} }   // de qual ferramenta a pessoa veio
   if (rota === 'preco') calcPreco();
   if (rota === 'caixa') calcCaixa();
   if (rota === 'raio-x' && Object.keys(lembrado('raiox') || {}).length) calcRaioX();
