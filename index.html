@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit do Lucrécio</title>
+<meta name="description" content="Ferramentas gratuitas para fazer as contas da sua empresa, uma para cada episódio de Lucrécio Faliu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amarelo: #F2C94C; --vermelho: #E63946; --verde: #2EC4B6; --azul: #4F86C6;
+    --tinta: #1A1A1A; --papel: #FFF8EC; --cartao: #ffffff; --linha: #1A1A1A; --suave: #6B6B6B;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--papel); color: var(--tinta); font-family: 'Nunito', system-ui, sans-serif; }
+  a { color: inherit; }
+  .topo { background: var(--amarelo); border-bottom: 4px solid var(--linha); padding: 14px 16px; position: sticky; top: 0; z-index: 5; }
+  .topo .in { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .marca { font-weight: 900; font-size: 20px; letter-spacing: .3px; text-decoration: none; }
+  .marca span { background: var(--vermelho); color: #fff; padding: 2px 8px; border-radius: 8px; margin-left: 4px; transform: rotate(-3deg); display: inline-block; }
+  .topo a.voltar { font-weight: 800; text-decoration: none; font-size: 15px; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 30px; line-height: 1.1; margin: 8px 0 10px; font-weight: 900; }
+  h2 { font-size: 22px; margin: 26px 0 10px; font-weight: 900; }
+  p { font-size: 17px; line-height: 1.5; margin: 8px 0; }
+  .sub { color: var(--suave); }
+  .cartao { background: var(--cartao); border: 3px solid var(--linha); border-radius: 18px; padding: 16px; margin: 14px 0; box-shadow: 4px 4px 0 var(--linha); }
+  .grade { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 560px) { .grade.duas { grid-template-columns: 1fr 1fr; } }
+  .ep { display: flex; gap: 12px; align-items: center; text-decoration: none; }
+  .ep .num { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 12px; border: 3px solid var(--linha); display: grid; place-items: center; font-weight: 900; background: var(--amarelo); }
+  .ep b { display: block; font-size: 17px; }
+  .ep small { color: var(--suave); font-size: 14px; }
+  .ep.breve { opacity: .55; pointer-events: none; }
+  .ep.breve .num { background: #E5E5E5; }
+  label { display: block; font-weight: 800; font-size: 15px; margin: 12px 0 4px; }
+  label small { font-weight: 600; color: var(--suave); }
+  input[type=number], input[type=text], input[type=email], input[type=tel], select {
+    width: 100%; font: inherit; font-size: 18px; padding: 12px; border: 3px solid var(--linha); border-radius: 12px; background: #fff; }
+  input:focus, select:focus { outline: 3px solid var(--azul); outline-offset: 1px; }
+  .pre { position: relative; } .pre i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-style: normal; font-weight: 800; color: var(--suave); }
+  .pre input { padding-left: 42px; } .pos input { padding-right: 36px; } .pos { position: relative; } .pos i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-style: normal; font-weight: 800; color: var(--suave); }
+  .btn { display: inline-block; font: inherit; font-weight: 900; font-size: 18px; padding: 14px 20px; border: 3px solid var(--linha); border-radius: 14px; background: var(--vermelho); color: #fff; text-decoration: none; cursor: pointer; box-shadow: 3px 3px 0 var(--linha); }
+  .btn.sec { background: #fff; color: var(--tinta); }
+  .btn.verde { background: var(--verde); color: var(--tinta); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--linha); }
+  .res { display: grid; gap: 10px; }
+  .linha { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; border-bottom: 2px dashed #ddd; padding: 6px 0; font-size: 17px; }
+  .linha b { font-size: 19px; white-space: nowrap; }
+  .destaque { border-radius: 14px; padding: 14px; border: 3px solid var(--linha); font-size: 17px; line-height: 1.45; }
+  .destaque.bom { background: #DDF7F4; } .destaque.ruim { background: #FDE2E4; } .destaque.meio { background: #FFF1C9; }
+  .destaque big { display: block; font-size: 30px; font-weight: 900; margin: 2px 0; }
+  .carimbo { display: inline-block; border: 4px solid var(--vermelho); color: var(--vermelho); font-weight: 900; padding: 2px 10px; border-radius: 10px; transform: rotate(-4deg); }
+  .barra { display: flex; height: 34px; border: 3px solid var(--linha); border-radius: 10px; overflow: hidden; margin: 8px 0; }
+  .barra div { display: grid; place-items: center; font-size: 12px; font-weight: 900; color: #fff; white-space: nowrap; overflow: hidden; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 14px; font-weight: 800; }
+  .legenda span::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; background: var(--c); border: 2px solid var(--linha); vertical-align: -1px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { border-bottom: 2px solid #eee; padding: 6px 4px; text-align: right; } th:first-child, td:first-child { text-align: left; }
+  td input { font-size: 15px; padding: 6px 8px; border-width: 2px; border-radius: 8px; text-align: right; }
+  .neg { color: var(--vermelho); font-weight: 900; } .pos-v { color: #0E8F84; font-weight: 900; }
+  .pergunta { margin: 14px 0; }
+  .pergunta p { font-weight: 800; margin-bottom: 8px; }
+  .opcoes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opcoes button { font: inherit; font-weight: 800; font-size: 15px; padding: 10px 14px; border: 3px solid var(--linha); border-radius: 12px; background: #fff; cursor: pointer; }
+  .opcoes button[aria-pressed=true] { background: var(--amarelo); }
+  .aviso { font-size: 14px; color: var(--suave); line-height: 1.4; border-top: 2px dashed #ccc; margin-top: 26px; padding-top: 12px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; font-size: 15px; }
+  .check input { width: 22px; height: 22px; margin-top: 2px; flex: 0 0 auto; }
+  .heroi { display: flex; gap: 14px; align-items: center; }
+  .heroi img { width: 96px; height: 96px; border-radius: 18px; border: 3px solid var(--linha); background: var(--verde); object-fit: cover; }
+  .oculto { display: none !important; }
+  .rodape { text-align: center; font-size: 14px; color: var(--suave); padding: 20px 16px 40px; }
+</style>
+</head>
+<body>
+<header class="topo"><div class="in">
+  <a class="marca" href="#/">KIT DO <span>LUCRÉCIO</span></a>
+  <a class="voltar oculto" id="voltar" href="#/">← todas as ferramentas</a>
+</div></header>
+<main id="app"></main>
+<footer class="rodape">Lucrécio Faliu — ele quebra pra você não quebrar. · <a href="#/privacidade">Privacidade</a></footer>
+
+<script>
+// ===================== configuração =====================
+// Endereço que recebe os contatos do formulário (planilha, ferramenta de e-mail etc.). Vazio = ainda não configurado.
+const ENDERECO_CONTATOS = '';
+const RESPONSAVEL = '[nome do responsável pelos dados — a definir]';
+const CONTATO_PRIVACIDADE = '[e-mail de contato — a definir]';
+
+// ===================== utilidades =====================
+const $ = (s, r = document) => r.querySelector(s);
+const brl = v => isFinite(v) ? v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }) : '—';
+const pct = v => isFinite(v) ? (v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%' : '—';
+const num = id => { const v = parseFloat(String($('#' + id)?.value ?? '').replace(',', '.')); return isFinite(v) ? v : 0; };
+const lembrar = (chave, obj) => { try { localStorage.setItem('kit_' + chave, JSON.stringify(obj)); } catch (e) {} };
+const lembrado = chave => { try { return JSON.parse(localStorage.getItem('kit_' + chave) || 'null'); } catch (e) { return null; } };
+function campo(id, rotulo, valor, { pre, pos, dica, passo = 'any' } = {}) {
+  const cls = pre ? 'pre' : pos ? 'pos' : '';
+  return `<label for="${id}">${rotulo}${dica ? ` <small>${dica}</small>` : ''}</label>
+    <div class="${cls}">${pre ? `<i>${pre}</i>` : ''}<input type="number" inputmode="decimal" step="${passo}" min="0" id="${id}" value="${valor}">${pos ? `<i>${pos}</i>` : ''}</div>`;
+}
+const AVISO = `<p class="aviso">Ferramenta educativa e gratuita. Os números são estimativas a partir do que você digitou; confira com o seu contador antes de decidir. Nada aqui é recomendação de investimento. Os dados que você digita ficam só no seu aparelho.</p>`;
+
+// ===================== episódios =====================
+const EPISODIOS = [
+  { n: 1, rota: 'preco', nome: 'Calculadora de preço', ep: 'Padaria — "somei 30% e achei que lucrava 30%"', pronto: true },
+  { n: 2, rota: 'caixa', nome: 'Fluxo de caixa de 4 semanas', ep: 'Loja — "vender muito não é ter dinheiro"', pronto: true },
+  { n: 3, rota: '', nome: 'Quanto me pagar de pró-labore', ep: 'Salão', pronto: false },
+  { n: 4, rota: '', nome: 'Prazo de receber × prazo de pagar', ep: 'Oficina', pronto: false },
+  { n: 5, rota: '', nome: 'Essa dívida se paga?', ep: 'Pizzaria', pronto: false },
+  { n: 6, rota: '', nome: 'Imposto ao sair do MEI', ep: 'Food truck', pronto: false },
+  { n: 7, rota: '', nome: 'Quanto sobra de cada pedido no aplicativo', ep: 'Delivery', pronto: false },
+  { n: 8, rota: '', nome: 'O que gira e o que está parado', ep: 'Mercadinho', pronto: false },
+  { n: 9, rota: '', nome: 'Custo real de um funcionário', ep: 'Barbearia', pronto: false },
+  { n: 10, rota: '', nome: 'Checklist antes de expandir', ep: 'Final da temporada', pronto: false },
+];
+
+// ===================== telas =====================
+const TELAS = {};
+
+TELAS[''] = () => `
+  <div class="heroi"><img src="lucrecio.jpg" alt="Lucrécio" onerror="this.remove()"><div>
+    <h1>Faça a conta que o Lucrécio não fez.</h1>
+    <p class="sub">Uma ferramenta grátis para cada episódio de <b>Lucrécio Faliu</b>. Funciona no celular, sem cadastro.</p>
+  </div></div>
+  <a class="cartao ep" href="#/raio-x" style="background:var(--verde)"><span class="num" style="background:#fff">✓</span><span><b>Raio-X da sua empresa</b><small style="color:var(--tinta)">10 perguntas, 2 minutos: veja onde a sua empresa está mais perto de quebrar.</small></span></a>
+  <h2>Ferramentas por episódio</h2>
+  <div class="grade">
+    ${EPISODIOS.map(e => `<a class="cartao ep ${e.pronto ? '' : 'breve'}" href="#/${e.rota}"><span class="num">${e.n}</span><span><b>${e.nome}</b><small>${e.pronto ? 'Ep. ' + e.n + ' · ' + e.ep : 'Em breve · Ep. ' + e.n + ' · ' + e.ep}</small></span></a>`).join('')}
+  </div>
+  ${AVISO}`;
+
+// ---------- Ep. 1: preço ----------
+TELAS['preco'] = () => {
+  const s = lembrado('preco') || { mp: 0.30, fixo: 6000, qtd: 30000, imp: 6, taxa: 3, lucro: 15, atual: 0.50 };
+  return `
+  <p class="sub">Episódio 1 · Padaria</p>
+  <h1>Quanto o seu produto precisa custar?</h1>
+  <p>O Lucrécio somou 30% no custo e achou que lucrava 30%. Coloque os seus números e veja quanto sobra de verdade.</p>
+  <div class="cartao">
+    ${campo('mp', 'Custo dos ingredientes de 1 unidade', s.mp, { pre: 'R$', dica: '(matéria-prima, embalagem)' })}
+    ${campo('fixo', 'Contas fixas do mês', s.fixo, { pre: 'R$', dica: '(aluguel, salários, gás, luz, contador)' })}
+    ${campo('qtd', 'Quantas unidades você vende por mês', s.qtd, { passo: 1 })}
+    <div class="grade duas">
+      <div>${campo('imp', 'Imposto sobre a venda', s.imp, { pos: '%' })}</div>
+      <div>${campo('taxa', 'Taxa da maquininha', s.taxa, { pos: '%', dica: '(média)' })}</div>
+    </div>
+    ${campo('lucro', 'Quanto você quer que sobre de lucro', s.lucro, { pos: '%', dica: '(do preço que o cliente paga)' })}
+    ${campo('atual', 'Seu preço hoje', s.atual, { pre: 'R$', dica: '(opcional)' })}
+  </div>
+  <div id="res" class="res"></div>
+  ${AVISO}`;
+};
+function calcPreco() {
+  const d = { mp: num('mp'), fixo: num('fixo'), qtd: num('qtd'), imp: num('imp'), taxa: num('taxa'), lucro: num('lucro'), atual: num('atual') };
+  lembrar('preco', d);
+  const fixoUn = d.qtd > 0 ? d.fixo / d.qtd : 0;
+  const custo = d.mp + fixoUn;
+  const sai = (d.imp + d.taxa) / 100, l = d.lucro / 100;
+  const r = $('#res');
+  if (custo <= 0) { r.innerHTML = `<div class="destaque meio">Preencha o custo dos ingredientes e as contas fixas.</div>`; return; }
+  if (sai + l >= 1) { r.innerHTML = `<div class="destaque ruim"><b>Impossível:</b> imposto + maquininha + lucro passam de 100% do preço. Reduza o lucro desejado.</div>`; return; }
+  const precoCerto = custo / (1 - sai - l);
+  const markup = precoCerto / custo;
+  const precoErrado = custo * (1 + l);                 // o jeito do Lucrécio: soma o % em cima do custo
+  const lucroErrado = precoErrado * (1 - sai) - custo;  // o que sobra de verdade nesse preço
+  const margemErrada = lucroErrado / precoErrado;
+  const contrib = precoCerto * (1 - sai) - d.mp;          // o que cada venda deixa para pagar as contas fixas
+  const equilibrio = contrib > 0 ? Math.ceil(d.fixo / contrib) : Infinity;
+  let atualHtml = '';
+  if (d.atual > 0) {
+    const lucroAtual = d.atual * (1 - sai) - custo, m = lucroAtual / d.atual;
+    const cls = m >= l - 0.005 ? 'bom' : m > 0 ? 'meio' : 'ruim';
+    atualHtml = `<div class="destaque ${cls}">No seu preço de hoje (${brl(d.atual)}), sobra <big>${brl(lucroAtual)} por unidade</big> ou <b>${pct(m)}</b> do preço${m <= 0 ? ' — <span class="carimbo">FALIU!</span> você paga para vender.' : m < l ? '. Abaixo do lucro que você quer.' : '. Dentro do que você quer. 👏'}</div>`;
+  }
+  const fat = [['Ingredientes', d.mp, '#ADB5BD'], ['Contas fixas', fixoUn, '#F77F00'], ['Imposto', precoCerto * d.imp / 100, '#E63946'], ['Maquininha', precoCerto * d.taxa / 100, '#9B5DE5'], ['Lucro', precoCerto * l, '#2EC4B6']];
+  r.innerHTML = `
+    <div class="cartao">
+      <div class="linha"><span>Contas fixas que cada unidade precisa pagar</span><b>${brl(fixoUn)}</b></div>
+      <div class="linha"><span>Custo total de 1 unidade</span><b>${brl(custo)}</b></div>
+    </div>
+    <div class="destaque bom">Preço certo para sobrar ${pct(l)} de lucro:<big>${brl(precoCerto)}</big>Isso é o custo multiplicado por <b>${markup.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}</b> (o seu markup).</div>
+    <div class="cartao"><b>Para onde vai o dinheiro de cada venda</b>
+      <div class="barra">${fat.map(([t, v, c]) => `<div style="background:${c};width:${(v / precoCerto * 100).toFixed(1)}%">${v / precoCerto > 0.12 ? t : ''}</div>`).join('')}</div>
+      <div class="legenda">${fat.map(([t, v, c]) => `<span style="--c:${c}">${t} ${brl(v)}</span>`).join('')}</div>
+    </div>
+    <div class="destaque ruim"><b>O erro do Lucrécio:</b> somar ${pct(l)} em cima do custo dá ${brl(precoErrado)}. Depois do imposto e da maquininha, sobram só <big>${pct(margemErrada)}</big>do preço (${brl(lucroErrado)} por unidade), não ${pct(l)}.</div>
+    ${atualHtml}
+    <div class="cartao"><div class="linha"><span>Ponto de equilíbrio: quanto vender por mês só para pagar as contas</span><b>${isFinite(equilibrio) ? equilibrio.toLocaleString('pt-BR') + ' un.' : '—'}</b></div>
+      <p class="sub" style="font-size:15px">Você vende ${d.qtd.toLocaleString('pt-BR')} por mês. ${isFinite(equilibrio) ? (d.qtd >= equilibrio ? 'Acima do equilíbrio. ✔' : '<b class="neg">Abaixo do equilíbrio: no preço certo e com essas vendas, as contas não fecham.</b>') : ''}</p></div>
+    <a class="btn" href="#/kit">Quero o kit completo grátis</a>`;
+}
+
+// ---------- Ep. 2: caixa ----------
+TELAS['caixa'] = () => {
+  const s = lembrado('caixa') || { saldo: 3000, ent: [6000, 5000, 7000, 5000], sai: [4000, 9500, 3000, 4500], minimo: 1000 };
+  return `
+  <p class="sub">Episódio 2 · Loja</p>
+  <h1>O dinheiro vai faltar em alguma semana?</h1>
+  <p>Lucro não é dinheiro no caixa. Anote quando o dinheiro <b>entra de verdade</b> (venda no cartão entra depois!) e quando <b>sai</b>.</p>
+  <div class="cartao">
+    ${campo('saldo', 'Dinheiro no caixa e no banco hoje', s.saldo, { pre: 'R$' })}
+    <table><thead><tr><th>Semana</th><th>Entra</th><th>Sai</th></tr></thead><tbody>
+      ${[0, 1, 2, 3].map(i => `<tr><td>${i + 1}ª</td><td><input type="number" inputmode="decimal" id="e${i}" value="${s.ent[i]}" aria-label="Entra na semana ${i + 1}"></td><td><input type="number" inputmode="decimal" id="s${i}" value="${s.sai[i]}" aria-label="Sai na semana ${i + 1}"></td></tr>`).join('')}
+    </tbody></table>
+    ${campo('minimo', 'Reserva mínima que você não quer furar', s.minimo, { pre: 'R$' })}
+  </div>
+  <div id="res" class="res"></div>
+  ${AVISO}`;
+};
+function calcCaixa() {
+  const ent = [0, 1, 2, 3].map(i => num('e' + i)), sai = [0, 1, 2, 3].map(i => num('s' + i));
+  const d = { saldo: num('saldo'), ent, sai, minimo: num('minimo') };
+  lembrar('caixa', d);
+  let s = d.saldo; const linhas = []; let pior = null;
+  ent.forEach((e, i) => { s += e - sai[i]; linhas.push(s); if (pior === null || s < pior.v) pior = { i, v: s }; });
+  const totalE = ent.reduce((a, b) => a + b, 0), totalS = sai.reduce((a, b) => a + b, 0);
+  const resultado = totalE - totalS;
+  const furo = linhas.findIndex(v => v < 0), abaixo = linhas.findIndex(v => v < d.minimo);
+  const msg = furo >= 0
+    ? `<div class="destaque ruim"><span class="carimbo">FALIU!</span> Na <b>${furo + 1}ª semana</b> o caixa fica em <big>${brl(linhas[furo])}</big>Mesmo que o mês feche ${resultado >= 0 ? 'positivo' : 'negativo'} (${brl(resultado)}), falta dinheiro antes. Negocie prazo com o fornecedor, adie uma compra ou antecipe só o necessário.</div>`
+    : abaixo >= 0
+      ? `<div class="destaque meio">O caixa não fura, mas na <b>${abaixo + 1}ª semana</b> fica abaixo da sua reserva mínima (${brl(linhas[abaixo])}).</div>`
+      : `<div class="destaque bom">O caixa aguenta as 4 semanas. Menor saldo: <big>${brl(pior.v)}</big>na ${pior.i + 1}ª semana.</div>`;
+  $('#res').innerHTML = `
+    ${msg}
+    <div class="cartao"><table><thead><tr><th>Semana</th><th>Entra</th><th>Sai</th><th>Saldo</th></tr></thead><tbody>
+      ${linhas.map((v, i) => `<tr><td>${i + 1}ª</td><td>${brl(ent[i])}</td><td>${brl(sai[i])}</td><td class="${v < 0 ? 'neg' : 'pos-v'}">${brl(v)}</td></tr>`).join('')}
+    </tbody></table>
+    <div class="linha"><span>Resultado do mês (entra − sai)</span><b class="${resultado < 0 ? 'neg' : 'pos-v'}">${brl(resultado)}</b></div></div>
+    <a class="btn" href="#/kit">Quero o kit completo grátis</a>`;
+}
+
+// ---------- Raio-X ----------
+const PERGUNTAS = [
+  ['preco', 'Você sabe quanto custa produzir cada coisa que vende (ingredientes + parte das contas fixas)?'],
+  ['preco', 'Quando o fornecedor aumenta o preço, você revê o seu preço?'],
+  ['caixa', 'Você anota o dia em que o dinheiro entra e sai (e não só o dia da venda)?'],
+  ['caixa', 'Você tem guardado pelo menos 1 mês de contas da empresa?'],
+  ['pfpj', 'A empresa tem uma conta separada da sua conta pessoal?'],
+  ['pfpj', 'Você se paga um valor fixo por mês (pró-labore), em vez de tirar quando precisa?'],
+  ['divida', 'Nos últimos 3 meses, você ficou sem usar cheque especial ou cartão para pagar contas da empresa?'],
+  ['divida', 'Antes de pegar empréstimo ou comprar equipamento, você confere se a parcela cabe no que sobra?'],
+  ['gestao', 'Você sabe quanto imposto vai pagar se a empresa crescer de faixa?'],
+  ['gestao', 'Se você faltar uma semana, a empresa continua funcionando?'],
+];
+const PILARES = { preco: 'Preço', caixa: 'Caixa', pfpj: 'Dinheiro da casa × da empresa', divida: 'Dívida', gestao: 'Imposto e equipe' };
+const DICA = { preco: ['preco', 'Comece pela calculadora de preço (Ep. 1).'], caixa: ['caixa', 'Comece pelo fluxo de caixa de 4 semanas (Ep. 2).'], pfpj: ['', 'O episódio do salão (Ep. 3) é sobre isso — a ferramenta chega em breve.'], divida: ['', 'O episódio da pizzaria (Ep. 5) é sobre isso — a ferramenta chega em breve.'], gestao: ['', 'Os episódios do food truck e da barbearia tratam disso — em breve.'] };
+TELAS['raio-x'] = () => {
+  const s = lembrado('raiox') || {};
+  return `
+  <p class="sub">Raio-X da empresa</p>
+  <h1>Onde a sua empresa está mais perto de quebrar?</h1>
+  <p>10 perguntas, responda com sinceridade. Ninguém vê as respostas além de você.</p>
+  <div class="cartao">${PERGUNTAS.map(([p, q], i) => `<div class="pergunta"><p>${i + 1}. ${q}</p><div class="opcoes" data-i="${i}">
+    ${[['2', 'Sim'], ['1', 'Mais ou menos'], ['0', 'Não']].map(([v, t]) => `<button type="button" data-v="${v}" aria-pressed="${s[i] === v}">${t}</button>`).join('')}
+  </div></div>`).join('')}</div>
+  <div id="res" class="res"></div>
+  ${AVISO}`;
+};
+function calcRaioX() {
+  const resp = {}; document.querySelectorAll('.opcoes').forEach(o => { const b = o.querySelector('[aria-pressed=true]'); if (b) resp[o.dataset.i] = b.dataset.v; });
+  lembrar('raiox', resp);
+  const feitas = Object.keys(resp).length;
+  if (feitas < PERGUNTAS.length) { $('#res').innerHTML = `<div class="destaque meio">Faltam ${PERGUNTAS.length - feitas} pergunta(s).</div>`; return; }
+  const soma = {}; PERGUNTAS.forEach(([p], i) => soma[p] = (soma[p] || 0) + Number(resp[i]));
+  const total = Object.values(soma).reduce((a, b) => a + b, 0); const nota = total / 2; // 0 a 10
+  const pior = Object.entries(soma).sort((a, b) => a[1] - b[1])[0][0];
+  const cls = nota >= 8 ? 'bom' : nota >= 5 ? 'meio' : 'ruim';
+  const frase = nota >= 8 ? 'Empresa de quem mede. O Kleberson ficaria com inveja.' : nota >= 5 ? 'Dá para melhorar antes que o Seu Boleto bata na porta.' : 'O Lucrécio se reconheceria aqui. Ainda dá tempo de não repetir o final dele.';
+  const [rota, dica] = DICA[pior];
+  $('#res').innerHTML = `
+    <div class="destaque ${cls}">Nota da sua gestão:<big>${nota.toLocaleString('pt-BR')} de 10</big>${frase}</div>
+    <div class="cartao">${Object.entries(PILARES).map(([k, t]) => { const v = soma[k] / 4; return `<div class="linha"><span>${t}</span><b class="${v < 0.5 ? 'neg' : v < 1 ? '' : 'pos-v'}">${'●'.repeat(soma[k])}${'○'.repeat(4 - soma[k])}</b></div>`; }).join('')}</div>
+    <div class="destaque ruim">Maior risco: <b>${PILARES[pior]}</b>. ${dica} ${rota ? `<p><a class="btn sec" href="#/${rota}">Abrir a ferramenta</a></p>` : ''}</div>
+    <a class="btn" href="#/kit">Receber o plano para o meu maior risco</a>`;
+}
+
+// ---------- captação (kit completo) ----------
+TELAS['kit'] = () => `
+  <h1>Kit completo do Lucrécio — grátis</h1>
+  <p>Receba as planilhas completas de cada episódio, o passo a passo para usar e o aviso quando sair a próxima ferramenta.</p>
+  <form class="cartao" id="form-kit" novalidate>
+    <label for="nome">Seu nome</label><input type="text" id="nome" autocomplete="given-name" required>
+    <label for="contato">WhatsApp ou e-mail</label><input type="text" id="contato" autocomplete="email" required>
+    <label for="segmento">Qual é o seu negócio?</label>
+    <select id="segmento"><option value="">Escolha</option>${['Alimentação (padaria, lanchonete, restaurante)', 'Comércio (loja, mercadinho)', 'Beleza (salão, barbearia, estética)', 'Serviços (oficina, manutenção, outros)', 'Delivery', 'Ainda vou abrir', 'Outro'].map(o => `<option>${o}</option>`).join('')}</select>
+    <label for="porte">Faturamento por mês</label>
+    <select id="porte"><option value="">Escolha</option>${['Até R$ 10 mil', 'R$ 10 mil a R$ 50 mil', 'R$ 50 mil a R$ 200 mil', 'Acima de R$ 200 mil', 'Prefiro não dizer'].map(o => `<option>${o}</option>`).join('')}</select>
+    <p></p>
+    <label class="check"><input type="checkbox" id="aceite"> <span>Aceito receber os materiais e novidades do Lucrécio Faliu por e-mail ou WhatsApp. Posso cancelar quando quiser. Li a <a href="#/privacidade">política de privacidade</a>.</span></label>
+    <p></p>
+    <button class="btn" type="submit">Quero o kit</button>
+    <div id="msg-kit"></div>
+  </form>`;
+async function enviarKit(ev) {
+  ev.preventDefault();
+  const dados = { nome: $('#nome').value.trim(), contato: $('#contato').value.trim(), segmento: $('#segmento').value, porte: $('#porte').value, origem: location.hash, quando: new Date().toISOString() };
+  const msg = $('#msg-kit');
+  if (!dados.nome || !dados.contato) { msg.innerHTML = `<div class="destaque meio">Preencha o nome e o contato.</div>`; return; }
+  if (!$('#aceite').checked) { msg.innerHTML = `<div class="destaque meio">Para enviar, marque que aceita receber os materiais.</div>`; return; }
+  if (!ENDERECO_CONTATOS) { msg.innerHTML = `<div class="destaque meio">O envio ainda está em configuração. Volte em breve! (nenhum dado foi enviado)</div>`; return; }
+  try {
+    await fetch(ENDERECO_CONTATOS, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(dados) });
+    msg.innerHTML = `<div class="destaque bom">Pronto, ${dados.nome.split(' ')[0]}! Logo você recebe o kit. Enquanto isso, faça o <a href="#/raio-x">Raio-X da sua empresa</a>.</div>`;
+    ev.target.reset();
+  } catch (e) { msg.innerHTML = `<div class="destaque ruim">Não consegui enviar agora. Tente de novo em alguns minutos.</div>`; }
+}
+
+// ---------- privacidade ----------
+TELAS['privacidade'] = () => `
+  <h1>Política de privacidade</h1>
+  <div class="cartao">
+    <p><b>Calculadoras e Raio-X:</b> tudo o que você digita fica só no seu aparelho (no navegador) e não é enviado para ninguém.</p>
+    <p><b>Formulário do kit:</b> se você preencher e aceitar, guardamos nome, contato, tipo de negócio e faixa de faturamento, apenas para enviar os materiais e novidades do Lucrécio Faliu.</p>
+    <p><b>Seus direitos (LGPD):</b> você pode pedir a qualquer momento para ver, corrigir ou apagar os seus dados, ou cancelar o recebimento, pelo contato abaixo.</p>
+    <p><b>Responsável pelos dados:</b> ${RESPONSAVEL}<br><b>Contato:</b> ${CONTATO_PRIVACIDADE}</p>
+    <p>Não vendemos nem repassamos os seus dados.</p>
+  </div>`;
+
+// ===================== roteador =====================
+function abrir() {
+  const rota = location.hash.replace(/^#\/?/, '');
+  const tela = TELAS[rota] || TELAS[''];
+  $('#app').innerHTML = tela();
+  $('#voltar').classList.toggle('oculto', !rota);
+  window.scrollTo(0, 0);
+  rotaAtual = rota;
+  if (rota === 'preco') calcPreco();
+  if (rota === 'caixa') calcCaixa();
+  if (rota === 'raio-x' && Object.keys(lembrado('raiox') || {}).length) calcRaioX();
+  if (rota === 'kit') $('#form-kit').addEventListener('submit', enviarKit);
+  document.title = rota ? ({ preco: 'Calculadora de preço', caixa: 'Fluxo de caixa', 'raio-x': 'Raio-X da empresa', kit: 'Kit completo', privacidade: 'Privacidade' }[rota] || 'Kit do Lucrécio') + ' · Kit do Lucrécio' : 'Kit do Lucrécio';
+}
+// um único ouvinte para todas as telas (a tela atual decide o que recalcular)
+let rotaAtual = '';
+$('#app').addEventListener('input', () => { if (rotaAtual === 'preco') calcPreco(); if (rotaAtual === 'caixa') calcCaixa(); });
+$('#app').addEventListener('click', e => {
+  if (rotaAtual !== 'raio-x') return;
+  const b = e.target.closest('.opcoes button'); if (!b) return;
+  b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); calcRaioX();
+});
+window.addEventListener('hashchange', abrir); abrir();
+</script>
+</body>
+</html>
